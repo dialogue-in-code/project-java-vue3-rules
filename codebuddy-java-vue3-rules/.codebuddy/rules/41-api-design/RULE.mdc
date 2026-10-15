@@ -1,0 +1,26 @@
+---
+description: REST API、响应结构、错误、校验、分页与兼容性规范
+alwaysApply: false
+enabled: true
+paths:
+  - "**/*Controller.java"
+  - "**/*Request.java"
+  - "**/*Response.java"
+  - "**/*DTO.java"
+  - "**/*Dto.java"
+  - "**/api/**"
+  - "**/*.vue"
+  - "**/*.ts"
+---
+
+# API 设计规范
+
+- 默认 REST 风格；其他协议须 ADR 批准。路由、HTTP method、DTO、错误码、响应 envelope 和分页结构全项目统一。
+- Controller 不直接返回 MyBatis 持久化对象或数据库 Entity。
+- 验证长度、范围、格式、枚举、分页大小；排序字段必须服务端白名单化，禁止直接拼入 SQL。
+- 鉴权和数据权限由服务端执行。客户端传入的 userId/tenantId/组织 ID 不能直接成为授权依据。
+- 区分参数错误、业务冲突、未认证、无权限、资源不存在、限流和系统错误；不以 HTTP 200 隐藏所有失败。
+- 错误响应不得包含堆栈、SQL 或机密。公共字段/类型/语义变化须评估兼容性，必要时版本化或设迁移期。
+- 日期、时间、金额、枚举、分页和排序格式必须统一。
+- 可能重复触发的写操作要评估幂等键/去重；列表 API 必须分页或有明确最大返回量，排序应稳定。
+- API 变更同步更新契约、测试和前端类型/调用代码。OpenAPI 工具尚未决策时，不得声称已经配置。

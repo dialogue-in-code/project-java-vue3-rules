@@ -1,0 +1,31 @@
+---
+description: 已确认技术、未决版本、依赖管理及技术变更审批
+alwaysApply: true
+enabled: true
+---
+
+# 技术栈与依赖基线
+
+## 已确认
+- Java 17；不得使用高于 Java 17 的语言特性或仅在更高 JDK 才提供的 API。
+- Spring Boot，精确版本 TBD。
+- MyBatis，精确版本 TBD。
+- PostgreSQL，精确版本 TBD。
+- 微服务架构。
+- Vue 3。
+- CodeBuddy。
+- Maven 为建议默认构建工具；Wrapper 与插件精确版本 TBD。
+
+## 规则
+1. 版本以 `docs/TECH-DECISIONS.md` 与实际构建文件为准。
+2. 选择 Spring Boot 后，依官方兼容矩阵确定 MyBatis Spring Boot Starter、驱动和配套依赖版本。
+3. 依赖/插件版本集中管理；前端依赖必须提交 lockfile。
+4. 禁止动态版本、未经批准的 SNAPSHOT、浮动容器标签和无法复现的依赖来源。
+5. 新增依赖前申请审批，说明坐标/包名、精确版本、用途、许可证、维护状态、漏洞、传递依赖和替代方案。
+6. 不得无理由覆盖父 POM 的 dependencyManagement 或 pluginManagement。
+7. 不得因构建失败随意加依赖、排除依赖或升级框架；先诊断根因。
+8. Vue 3 已确认，但 TypeScript、Vite、Node、包管理器、Pinia、Vue Router、UI 库、CSS 方案和图表库均需决策或沿用仓库批准方案。
+9. 服务发现、网关、配置中心、通信客户端、消息队列、缓存、迁移工具、认证和可观测性组件均为 TBD，不能擅自引入。
+
+## 审批
+任何主版本升级、框架替换、公共依赖、前端组件库、通信机制或构建工具变更须提交 ADR，批准后才可实施。

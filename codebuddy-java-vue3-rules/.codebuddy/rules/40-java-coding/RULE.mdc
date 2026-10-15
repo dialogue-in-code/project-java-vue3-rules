@@ -1,0 +1,23 @@
+---
+description: Java 17 编码、分层、依赖注入、异常、日志、并发与性能规范
+alwaysApply: false
+enabled: true
+paths:
+  - "**/*.java"
+---
+
+# Java 编码规范
+
+- 必须兼容 Java 17；类型 UpperCamelCase，方法/变量 lowerCamelCase，常量 UPPER_SNAKE_CASE。
+- 格式与检查由项目批准的 formatter/Checkstyle 规则统一。
+- 优先构造器注入，禁止字段注入。优先局部变量和不可变状态，避免单例对象保存请求级可变数据。
+- 不以魔法数字/字符串表达业务状态；使用明确枚举、常量或领域类型。
+- 服务内分层：`interfaces`（Controller/DTO）→ `application`（用例编排/事务）→ `domain`（核心规则），`infrastructure` 实现持久化与外部适配器；可按模板调整命名但保留职责边界。
+- Controller 仅处理协议适配、参数校验、身份上下文和响应映射；应用服务负责用例编排和事务边界；Mapper 只负责持久化；domain 不依赖 Web Controller、MyBatis Mapper 或数据库实现。
+- DTO、领域对象和持久化对象按职责区分，不得无条件把数据库模型暴露给 API。
+- 使用统一异常模型和全局异常映射；禁止空 catch、吞异常或仅打印后继续。
+- 不向客户端暴露堆栈、SQL、内部主机、凭证或敏感数据。
+- 使用统一日志门面，禁止 `System.out/err` 记录业务日志；避免重复记录同一异常及循环内逐条 INFO。
+- 使用 `java.time`；时区和序列化遵守 API 约定。
+- 并发状态变更需明确同步、版本、条件更新或锁策略；后台任务需定义线程池容量、超时、拒绝策略和错误处理。
+- 禁止无界加载、无界集合和无界线程池；禁止循环内逐条数据库/网络请求；大数据处理采用经验证的批量、分页或游标方案。
